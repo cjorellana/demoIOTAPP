@@ -28,7 +28,7 @@
 </ion-header>
 <ion-content no-padding style="background-color: #f4f4f4">
   <!-- Horno uno -->
-  <ion-card *ngFor="let i of data" color="{{ i['temperatura'] > 90 ? 'sobrecalendado' : 'tem_normal'}}">
+  <ion-card *ngFor="let i of data; index as pos" color="{{ leerData[pos]['leer'] == 1 ? (i['temperatura'] > 90 ? 'sobrecalendado' : 'tem_normal') : 'tem_normal'}}">
     <ion-grid>
       <ion-row>
         <ion-col col-12>
@@ -36,27 +36,30 @@
         </ion-col>
       </ion-row>
       <ion-row>
+        <ion-col col-9 no-padding >
+          <ion-item color="{{ leerData[pos]['leer'] == 1 ? (i['temperatura'] > 90 ? 'sobrecalendado' : 'tem_normal') : 'tem_normal'}}">
+            <strong>Horno {{ i['nombre'] }}</strong>
+          </ion-item>
+          <ion-item color="{{ leerData[pos]['leer'] == 1 ? (i['temperatura'] > 90 ? 'sobrecalendado' : 'tem_normal') : 'tem_normal'}}">
+            <strong>Temperatura:</strong> {{ leerData[pos]['leer'] == 1 ? i['temperatura'] : 0 }}
+          </ion-item>
+        </ion-col>
+        <ion-col col-3 no-padding>
+          <ion-item color="{{ leerData[pos]['leer'] == 1 ? (i['temperatura'] > 90 ? 'sobrecalendado' : 'tem_normal') : 'tem_normal'}}">
+            <button ion-button round color="dark" (click)="dejardeleer(pos)"> Stop</button>
+          </ion-item>
 
-        <ion-item><strong>Horno {{ i['nombre'] }}</strong> </ion-item>
-        <ion-item><strong>Temperatura:</strong> {{ i['temperatura'] }}</ion-item>
-
-        <ion-item style="display: none">
-
-          fecha: "2019-05-08"
-          fechahora: "2019-05-08 22:45:25"
-          horno_id: 1
-          id: 71
-          nombre: "Principal"
-          temperatura: 97
-
-        </ion-item>
+          <ion-item color="{{ leerData[pos]['leer'] == 1 ? (i['temperatura'] > 90 ? 'sobrecalendado' : 'tem_normal') : 'tem_normal'}}">
+            <button ion-button round color="dark" (click)="iniciarleer(pos)"> Iniciar</button>
+          </ion-item>
+        </ion-col>
       </ion-row>
     </ion-grid>
   </ion-card>
 
   <ion-row>
     <ion-col>
-      <button ion-button full round icon-end color="iniciar" (click)="monitor()">
+      <button ion-button full round icon-end color="iniciar" (click)="iniciarMonitor()">
         Iniciar
         <ion-icon name="checkmark-circle"> </ion-icon>
       </button>

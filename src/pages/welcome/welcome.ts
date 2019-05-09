@@ -32,22 +32,63 @@ export class WelcomePage {
     private localNotifications: LocalNotifications
   ) { }
   data: any = [];
+  leerData:any=[];
   img: string = '../assets/img/splashbg.gif';
   myTime = setInterval(()=>{},800);
+  iniciado: boolean = false;
+
   ionViewDidEnter(){
     this.menu.enable(false);
+    this.iniciado = true;
     this.monitor();
   }
   monitor(){
     this.myTime = setInterval(()=>{
       this.api.get('monitor',{}).subscribe((response) => {
         this.data = response;
+        let auxiliar = this.leerData;
+        this.leerData = [];
+        let i = 0;
+        this.data.forEach(() => {
+          if (auxiliar.length > 0){
+            this.leerData.push({leer: auxiliar[i]['leer']});
+          }else {
+            this.leerData.push({leer: 1 });
+          }
+          i++;
+        });
       })
     },800);
   }
-  detener(){
 
-    clearInterval(this.myTime);
+  detener(){
+    if (this.iniciado){
+      this.iniciado = false;
+      clearInterval(this.myTime);
+    }
+  }
+
+
+  iniciarMonitor(){
+    if (!this.iniciado){
+      this.iniciado = true;
+      if (this.leerData.length > 0){
+        this.leerData.forEach((row)=>{
+          row['leer'] = 1;
+        });
+      }
+      this.monitor();
+    }
+  }
+  dejardeleer(posicion:number){
+    if (this.leerData.length > 0){
+      this.leerData[posicion]['leer'] = 0;
+    }
+  }
+  iniciarleer(posicion:number){
+    if (this.leerData.length > 0){
+      this.leerData[posicion]['leer'] = 1;
+    }
   }
 
   alarma(mensaje:string){
@@ -61,7 +102,6 @@ export class WelcomePage {
     });
 
   }
-
   setSound() {
     if (this.platform.is('android')) {
       return 'file://assets/sounds/shame.mp3'
@@ -69,6 +109,7 @@ export class WelcomePage {
       return 'file://assets/sounds/bell.mp3'
     }
   }
+
 
   /*login() {
     this.navCtrl.push('LoginPage');
