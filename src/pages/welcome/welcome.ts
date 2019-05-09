@@ -1,5 +1,15 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController } from 'ionic-angular';
+import {
+//  AlertController,
+  IonicPage, MenuController,
+  NavController,
+  Platform
+} from 'ionic-angular';
+import {Api} from "../../providers";
+
+import { LocalNotifications } from '@ionic-native/local-notifications';
+
+
 
 /**
  * The Welcome Page is a splash page that quickly describes the app,
@@ -14,13 +24,57 @@ import { IonicPage, NavController } from 'ionic-angular';
 })
 export class WelcomePage {
 
-  constructor(public navCtrl: NavController) { }
+  constructor(
+    public navCtrl: NavController,
+    private api : Api,
+    private platform: Platform,
+    private menu: MenuController,
+    private localNotifications: LocalNotifications
+  ) { }
+  data: any = [];
+  img: string = '../assets/img/splashbg.gif';
+  myTime = setInterval(()=>{},800);
+  ionViewDidEnter(){
+    this.menu.enable(false);
+    this.monitor();
+  }
+  monitor(){
+    this.myTime = setInterval(()=>{
+      this.api.get('monitor',{}).subscribe((response) => {
+        this.data = response;
+      })
+    },800);
+  }
+  detener(){
 
-  login() {
+    clearInterval(this.myTime);
+  }
+
+  alarma(mensaje:string){
+    this.platform.ready().then((data) =>{
+      this.localNotifications.schedule({
+        id: 1,
+        text: mensaje,
+        sound: this.setSound(),
+        data: { secret: mensaje }
+      });
+    });
+
+  }
+
+  setSound() {
+    if (this.platform.is('android')) {
+      return 'file://assets/sounds/shame.mp3'
+    } else {
+      return 'file://assets/sounds/bell.mp3'
+    }
+  }
+
+  /*login() {
     this.navCtrl.push('LoginPage');
   }
 
   signup() {
     this.navCtrl.push('SignupPage');
-  }
+  }*/
 }
