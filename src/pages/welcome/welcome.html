@@ -36,7 +36,7 @@
         </ion-col>
       </ion-row>
       <ion-row>
-        <ion-col col-9 no-padding >
+        <ion-col col-12 no-padding >
           <ion-item color="{{ leerData[pos]['leer'] == 1 ? (i['temperatura'] > 90 ? 'sobrecalendado' : 'tem_normal') : 'tem_normal'}}">
             <strong>Horno {{ i['nombre'] }}</strong>
           </ion-item>
@@ -44,48 +44,31 @@
             <strong>Temperatura:</strong> {{ leerData[pos]['leer'] == 1 ? i['temperatura'] : 0 }}
           </ion-item>
         </ion-col>
-        <ion-col col-3 no-padding>
-          <ion-item color="{{ leerData[pos]['leer'] == 1 ? (i['temperatura'] > 90 ? 'sobrecalendado' : 'tem_normal') : 'tem_normal'}}">
-            <button ion-button round color="dark" (click)="dejardeleer(pos)"> Stop</button>
-          </ion-item>
-
-          <ion-item color="{{ leerData[pos]['leer'] == 1 ? (i['temperatura'] > 90 ? 'sobrecalendado' : 'tem_normal') : 'tem_normal'}}">
-            <button ion-button round color="dark" (click)="iniciarleer(pos)"> Iniciar</button>
-          </ion-item>
+      </ion-row>
+      <ion-row>
+        <ion-col col-6>
+          <button ion-button full small round color="dark" (click)="iniciarleer(pos)"> Iniciar</button>
+        </ion-col>
+        <ion-col col-6>
+          <button ion-button full small round color="dark" (click)="dejardeleer(pos)"> Stop</button>
         </ion-col>
       </ion-row>
     </ion-grid>
   </ion-card>
-
   <ion-row>
-    <ion-col>
-      <button ion-button full round icon-end color="iniciar" (click)="iniciarMonitor()">
-        Iniciar
+    <ion-col col-12>
+      <button ion-button full small round icon-end color="iniciar" (click)="iniciarMonitor()">
+        Iniciar Lectura
         <ion-icon name="checkmark-circle"> </ion-icon>
       </button>
     </ion-col>
   </ion-row>
   <ion-row>
     <ion-col>
-      <button ion-button full round icon-end color="stop" (click)="detener()">
-        Stop
+      <button ion-button full small round icon-end color="stop" (click)="detener()">
+        Detener Lectura
         <ion-icon name="close-circle"> </ion-icon>
       </button>
     </ion-col>
   </ion-row>
-
-  <ion-card>
-  </ion-card>
-  <!-- Horno dos -->
-  <!--<ion-card>
-    <ion-grid>
-      <ion-row>
-        <ion-col col-12>
-          <img src="{{ img }}">
-        </ion-col>
-      </ion-row>
-    </ion-grid>
-
-  </ion-card>-->
-
 </ion-content>
